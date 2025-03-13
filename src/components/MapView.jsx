@@ -7,9 +7,8 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 import styles from './MapView.module.css';
-import { useState } from 'react';
 
-function MapView({ setLat, setLng, position, zoom, mapLat, mapLng }) {
+function MapView({ setLat, setLng, position, zoom }) {
   return (
     <MapContainer
       center={position}
@@ -23,9 +22,7 @@ function MapView({ setLat, setLng, position, zoom, mapLat, mapLng }) {
         url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
       />
       <Marker position={position}>
-        <Popup>
-          <img src="/logo-dark.png" alt="" />
-        </Popup>
+        <Popup></Popup>
       </Marker>
       <DetectClick setLat={setLat} setLng={setLng} />
     </MapContainer>

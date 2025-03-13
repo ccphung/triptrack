@@ -10,10 +10,15 @@ const store = configureStore({
 
 export default store;
 
-export const getExpenses =  (state) => state.expense.expense;
+export const getExpenses = (state) => state.expense.expense;
 
 export const getTotalExpense = (state) =>
   state.expense.expense.reduce(
     (sum, item) => Number(sum) + Number(item.price),
     0,
+  );
+
+export const getDates = (state) =>
+  [...new Set(state.expense.expense.map((item) => item.date))].sort(
+    (a, b) => new Date(b) - new Date(a),
   );

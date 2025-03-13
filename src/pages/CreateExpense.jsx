@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem } from '../slices/expenseSlice';
 import { useNavigate } from 'react-router-dom';
-import MapView from '../components/MapView';
 
 import Calender from '../components/Calender';
+import MapView from '../components/MapView';
 import { formatDate } from '../utils/helpers';
-import { useMapEvent, useMapEvents } from 'react-leaflet';
+import { addItem } from '../slices/expenseSlice';
 
 const categories = [
   { id: 1, name: 'Restauration', emoji: '🍕' },
@@ -16,7 +15,13 @@ const categories = [
   { id: 5, name: 'Autre', emoji: '❓' },
 ];
 
-const BASE_URL = 'https://api.bigdatacloud.net/data/reverse-geocode-client';
+const BASE_URL_GEOCODE =
+  'https://api.bigdatacloud.net/data/reverse-geocode-client';
+
+const BASE_URL_RESTCOUNTRIES = 'https://restcountries.com/v3.1/alpha';
+
+const BASE_URL_EXCHANGE =
+  'https://v6.exchangerate-api.com/v6/243b273dc07f28cae48affa2/pair';
 
 function CreateExpense() {
   const [title, setTitle] = useState('');
@@ -24,7 +29,7 @@ function CreateExpense() {
   const [note, setNote] = useState('');
   const [category, setCategory] = useState(categories[0]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [position, setPosition] = useState([52.505, -0.09]);
+  const [position, setPosition] = useState([48.82, 2.45]);
   const [lat, setLat] = useState('');
   const [lng, setLng] = useState('');
   const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
@@ -32,10 +37,14 @@ function CreateExpense() {
   const [cityName, setCityName] = useState('');
   const [country, setCountry] = useState('');
   const [countryCode, setCountryCode] = useState('');
+  const [currency, setCurrency] = useState('EUR');
+  const [selectedCurrency, setSelectedCurrency] = useState('');
+  const [exchangeRate, setExchangeRate] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Fetch position
   useEffect(() => {
     if (lat && lng) {
       setPosition([lat, lng]);
@@ -50,7 +59,7 @@ function CreateExpense() {
           setIsLoadingGeocoding(true);
           setGeocodingError('');
           const res = await fetch(
-            `${BASE_URL}?latitude=${lat}&longitude=${lng}`,
+            `${BASE_URL_GEOCODE}?latitude=${lat}&longitude=${lng}`,
           );
           const data = await res.json();
           console.log(data);
@@ -73,6 +82,43 @@ function CreateExpense() {
     [lat, lng],
   );
 
+  // Fetch currency
+  useEffect(
+    function () {
+      async function fetchCurrency() {
+        try {
+          const res = await fetch(`${BASE_URL_RESTCOUNTRIES}/${countryCode}`);
+          const data = await res.json();
+          setCurrency(Object.keys(data[0].currencies)[0]);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      fetchCurrency();
+    },
+    [countryCode],
+  );
+
+  // Fetch exchange rate
+  useEffect(
+    function () {
+      if (currency === 'EUR') return;
+      async function getExchangeRate() {
+        try {
+          const res = await fetch(`${BASE_URL_EXCHANGE}/EUR/${currency}`);
+          const data = await res.json();
+          console.log(data);
+          setExchangeRate(data.conversion_rate);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      getExchangeRate();
+    },
+    [selectedCurrency, currency],
+  );
+
+  // Set category
   function handleSelectCategory(e) {
     const selectedCategory = categories.find(
       (cat) => cat.id === Number(e.target.value),
@@ -80,6 +126,7 @@ function CreateExpense() {
     setCategory(selectedCategory);
   }
 
+  // Submit new expense
   function handleSubmit(e) {
     e.preventDefault();
     console.log(position);
@@ -95,6 +142,8 @@ function CreateExpense() {
       category,
       lat,
       lng,
+      selectedCurrency,
+      exchangeRate,
     };
 
     dispatch(addItem(newExpense));
@@ -119,7 +168,7 @@ function CreateExpense() {
 
             <div className="flex flex-row items-center text-stone-700">
               <label htmlFor="title" className="mr-4 text-lg">
-                Montant (€)
+                Montant
               </label>
               <input
                 type="number"
@@ -128,7 +177,28 @@ function CreateExpense() {
                 onChange={(e) => setPrice(e.target.value)}
                 className="input w-72 rounded-xl p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
               />
+
+              {currency === 'EUR' || currency === '' ? (
+                'EUR'
+              ) : (
+                <div>
+                  <select
+                    name="currency"
+                    id="currency"
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                  >
+                    <option value={currency}>{currency}</option>
+                    <option value="EUR">EUR</option>
+                  </select>
+                </div>
+              )}
             </div>
+
+            {currency !== 'EUR' && (
+              <p className="italic text-slate-500">
+                ({exchangeRate * price} en EUR)
+              </p>
+            )}
 
             <div className="my-4 flex flex-row items-center">
               <p className="mr-4 text-lg text-stone-700">Date</p>
