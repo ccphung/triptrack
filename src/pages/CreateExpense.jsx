@@ -6,6 +6,7 @@ import Calender from '../components/Calender';
 import MapView from '../components/MapView';
 import { formatDate } from '../utils/helpers';
 import { addItem } from '../slices/expenseSlice';
+import { nanoid } from 'nanoid';
 
 const categories = [
   { id: 1, name: 'Restauration', emoji: '🍕' },
@@ -132,6 +133,7 @@ function CreateExpense() {
     console.log(position);
 
     const newExpense = {
+      id: nanoid(),
       title,
       note,
       country,
@@ -144,6 +146,7 @@ function CreateExpense() {
       lng,
       selectedCurrency,
       exchangeRate,
+      createdAt: new Date(),
     };
 
     dispatch(addItem(newExpense));

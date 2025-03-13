@@ -31,14 +31,17 @@ function Homepage() {
         </div>
         <p className="text-sm">Dernières dépenses : </p>
         <div className="min-h-[200px] bg-stone-100">
-          {expense.map((item, index) => (
-            <div key={index} className="m-2 bg-stone-200 px-4 py-1">
-              <div className="flex items-center">
-                <p className="text-lg font-semibold"> {item.price}€</p>
-                <p className="ml-2"> {item.title}</p>
+          {expense
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((item) => (
+              <div key={item.id} className="m-2 bg-stone-200 px-4 py-1">
+                <div className="flex items-center">
+                  <p className="text-lg font-semibold"> {item.price}€</p>
+                  <p className="ml-2"> {item.title}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

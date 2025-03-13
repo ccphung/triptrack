@@ -34,6 +34,7 @@ function History() {
 
                 <p className="text-lg font-semibold">
                   {expenses
+
                     .filter((expense) => expense.date === expenseDate)
                     .reduce(
                       (total, expense) => total + Number(expense.price),
@@ -45,6 +46,7 @@ function History() {
 
               {expenses
                 .filter((expense) => expense.date === expenseDate)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((item) => (
                   <div
                     key={item.date + item.title}
@@ -56,19 +58,18 @@ function History() {
                           <p className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-slate-500">
                             {item.category.emoji}
                           </p>
-                          <p>
-                            {item.title}{' '}
-                            <div className="flex">
-                              <p className="text-sm text-stone-500">
-                                {item.cityName}
-                              </p>
-                              <img
-                                className="ml-2 w-5"
-                                src={`https://flagsapi.com/${item.countryCode}/flat/64.png`}
-                                alt="flag"
-                              />
-                            </div>
-                          </p>
+
+                          <p>{item.title}</p>
+                          <div className="flex">
+                            <p className="text-sm text-stone-500">
+                              {item.cityName}
+                            </p>
+                            <img
+                              className="ml-2 w-5"
+                              src={`https://flagsapi.com/${item.countryCode}/flat/64.png`}
+                              alt="flag"
+                            />
+                          </div>
                         </div>
                         <p>
                           {item.price} {item.selectedCurrency}
