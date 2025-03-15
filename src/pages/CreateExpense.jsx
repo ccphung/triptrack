@@ -42,6 +42,8 @@ function CreateExpense() {
   const [selectedCurrency, setSelectedCurrency] = useState('');
   const [exchangeRate, setExchangeRate] = useState('');
 
+  const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -127,10 +129,33 @@ function CreateExpense() {
     setCategory(selectedCategory);
   }
 
+  //Validates form
+  function validateForm() {
+    const newErrors = {};
+
+    if (!title.trim()) newErrors.title = 'Le titre est requis.';
+    else if (title.length < 3)
+      newErrors.title = 'Le titre doit contenir au moins 3 caractères.';
+
+    if (!price) newErrors.price = 'Le montant est requis.';
+    else if (isNaN(price) || Number(price) <= 0)
+      newErrors.price = 'Le montant doit être un nombre positif.';
+
+    if (!category)
+      newErrors.category = 'Veuillez sélectionner une catégorie valide.';
+
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0;
+  }
+
   // Submit new expense
   function handleSubmit(e) {
     e.preventDefault();
     console.log(position);
+    // Stop submission if validation fails
+    if (!validateForm()) return;
 
     const newExpense = {
       id: nanoid(),
@@ -167,9 +192,10 @@ function CreateExpense() {
                 onChange={(e) => setTitle(e.target.value)}
                 className="input mb-8 w-72 rounded-xl p-2 text-3xl accent-violet-500 focus:outline-none focus:ring-offset-2"
               />
+              {errors.title && <p className="text-red-500">{errors.title}</p>}
             </div>
 
-            <div className="flex flex-row items-center text-stone-700">
+            <div className="flex max-w-sm flex-row items-center text-stone-700">
               <label htmlFor="title" className="mr-4 text-lg">
                 Montant
               </label>
@@ -178,9 +204,8 @@ function CreateExpense() {
                 placeholder="Ajouter un montant"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="input w-72 rounded-xl p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
+                className="input rounded-xl p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
               />
-
               {currency === 'EUR' || currency === '' ? (
                 'EUR'
               ) : (
@@ -196,6 +221,7 @@ function CreateExpense() {
                 </div>
               )}
             </div>
+            {errors.price && <p className="text-red-500">{errors.price}</p>}
 
             {currency !== 'EUR' && (
               <p className="italic text-slate-500">
