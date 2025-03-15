@@ -207,7 +207,7 @@ function CreateExpense() {
                 placeholder="Ajouter un montant"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg text-stone-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
               {currency === 'EUR' || currency === '' ? (
                 'EUR'
@@ -276,7 +276,7 @@ function CreateExpense() {
                 placeholder="Ajouter une position"
                 value={cityName}
                 onChange={() => setPosition([lat, lng])}
-                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg text-stone-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
 
@@ -292,7 +292,7 @@ function CreateExpense() {
                 placeholder=""
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg text-stone-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
           </div>
