@@ -179,24 +179,27 @@ function CreateExpense() {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-10">
-      <div className="max-w-[1048px]">
+    <div className="flex flex-wrap items-center justify-center gap-10">
+      <div className="max-w-[1048px] rounded-xl p-5 shadow-md">
         <form onSubmit={handleSubmit} className="xl:mr-5">
           <div className="flex flex-col items-end">
-            <div className="flex flex-col text-stone-700">
+            <div className="mb-5 flex flex-col text-stone-700">
               <input
                 autoFocus
                 type="text"
-                placeholder="Titre de la dépense"
+                placeholder="  Titre de la dépense"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="input mb-8 w-72 rounded-xl p-2 text-3xl accent-violet-500 focus:outline-none focus:ring-offset-2"
+                className="input w-72 rounded-xl border bg-purple-900/10 p-1 text-lg text-stone-500 accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
               />
               {errors.title && <p className="text-red-500">{errors.title}</p>}
             </div>
 
-            <div className="flex max-w-sm flex-row items-center text-stone-700">
-              <label htmlFor="title" className="mr-4 text-lg">
+            <div className="flex max-w-sm flex-row items-center text-stone-50">
+              <label
+                htmlFor="title"
+                className="mr-4 rounded-full bg-stone-800 px-4 py-2 text-lg"
+              >
                 Montant
               </label>
               <input
@@ -204,7 +207,7 @@ function CreateExpense() {
                 placeholder="Ajouter un montant"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="input rounded-xl p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
               {currency === 'EUR' || currency === '' ? (
                 'EUR'
@@ -230,21 +233,27 @@ function CreateExpense() {
             )}
 
             <div className="my-4 flex flex-row items-center">
-              <p className="mr-4 text-lg text-stone-700">Date</p>
+              <p className="mr-4 rounded-full bg-stone-800 px-4 py-2 text-lg text-stone-50">
+                Date
+              </p>
               <Calender
                 onSelectedDate={setSelectedDate}
                 selectedDate={selectedDate}
               />
             </div>
 
-            <div className="my-4 flex flex-row text-stone-700">
-              <label htmlFor="category" className="mr-4 text-lg">
+            <div className="my-4 flex flex-row text-stone-50">
+              <label
+                htmlFor="category"
+                className="mr-4 rounded-full bg-stone-800 px-4 py-2 text-lg"
+              >
                 Catégorie
               </label>
               <select
                 name="category"
                 value={category.id}
-                className="input w-72 rounded-xl border p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
+                placeholder="Selectioner la catégorie"
+                className="input w-72 rounded-lg border-2 border-gray-300 bg-stone-400 p-2 text-lg text-stone-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 onChange={handleSelectCategory}
               >
                 {categories.map((category) => (
@@ -255,8 +264,11 @@ function CreateExpense() {
               </select>
             </div>
 
-            <div className="flex flex-row items-center text-stone-700">
-              <label htmlFor="title" className="mr-4 text-lg">
+            <div className="flex flex-row items-center text-stone-50">
+              <label
+                htmlFor="title"
+                className="mr-4 rounded-full bg-stone-800 px-4 py-2 text-lg"
+              >
                 Emplacement
               </label>
               <input
@@ -264,12 +276,15 @@ function CreateExpense() {
                 placeholder="Ajouter une position"
                 value={cityName}
                 onChange={() => setPosition([lat, lng])}
-                className="input w-72 rounded-xl p-1 text-lg accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
 
-            <div className="mt-5 flex flex-row text-stone-700">
-              <label htmlFor="note" className="mr-4 text-lg">
+            <div className="mt-5 flex flex-row items-center text-stone-700">
+              <label
+                htmlFor="note"
+                className="mr-4 rounded-full bg-stone-800 px-4 py-2 text-lg text-stone-50"
+              >
                 Note
               </label>
               <textarea
@@ -277,12 +292,12 @@ function CreateExpense() {
                 placeholder=""
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="input mb-8 w-72 rounded-xl border p-2 text-sm accent-violet-500 focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2"
+                className="input w-72 rounded-lg border-2 border-gray-300 p-2 text-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <button className="rounded-full bg-violet-500 px-4 py-2 text-white transition-all duration-300 hover:bg-violet-400">
+            <button className="mt-7 flex items-center justify-center rounded-full bg-violet-800 px-8 py-2 text-xl text-slate-100 hover:bg-violet-800/50">
               Enregistrer
             </button>
           </div>
