@@ -12,7 +12,7 @@ function Homepage() {
       <div className="flex max-w-[1048px] flex-col justify-center">
         <div className="mb-5 mt-8 flex flex-col items-center">
           <div className="flex items-center justify-center">
-            <h1 className="ml-15 mb-15 text-violet-800">Compte</h1>
+            <h1 className="ml-15 mb-5 text-[1.2em] text-violet-800">Compte</h1>
           </div>
           <p>Vous avez dépensé :</p>
           <h2 className="mb-10 text-[3em]">{totalExpense} €</h2>
@@ -24,7 +24,7 @@ function Homepage() {
               >
                 <ScrollText />
               </button>
-              <p>Historique</p>
+              <p className="text-xs">Historique</p>
             </div>
             <div className="ml-5 flex flex-col items-center justify-center text-center">
               <button
@@ -33,12 +33,12 @@ function Homepage() {
               >
                 <CirclePlus />
               </button>
-              <p>Ajouter</p>
+              <p className="text-xs">Ajouter</p>
             </div>
           </div>
         </div>
         <p className="text-sm">Dernières dépenses : </p>
-        <div className="min-h-[200px] rounded-xl p-5 shadow-md">
+        <div className="min-h-[200px] rounded-xl p-5 text-stone-600 shadow-md">
           {expense
             .slice()
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
