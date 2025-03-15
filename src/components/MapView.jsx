@@ -23,7 +23,7 @@ function MapView({ setLat, setLng, position, zoom }) {
       />
       <Marker position={position}>
         <Popup></Popup>
-      </Marker>
+      </Marker>{' '}
       <DetectClick setLat={setLat} setLng={setLng} />
     </MapContainer>
   );

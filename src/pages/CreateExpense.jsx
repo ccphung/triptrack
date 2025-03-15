@@ -214,6 +214,7 @@ function CreateExpense() {
               ) : (
                 <div>
                   <select
+                    className="text-stone-500"
                     name="currency"
                     id="currency"
                     onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -226,7 +227,7 @@ function CreateExpense() {
             </div>
             {errors.price && <p className="text-red-500">{errors.price}</p>}
 
-            {currency !== 'EUR' && (
+            {selectedCurrency !== 'EUR' && (
               <p className="italic text-slate-500">
                 ({exchangeRate * price} en EUR)
               </p>
