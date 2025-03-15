@@ -154,7 +154,7 @@ function CreateExpense() {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-wrap justify-center gap-10">
       <div className="max-w-[1048px]">
         <form onSubmit={handleSubmit} className="xl:mr-5">
           <div className="flex flex-col items-end">
