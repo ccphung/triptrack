@@ -39,20 +39,44 @@ function Homepage() {
         </div>
         <p className="text-sm">Dernières dépenses : </p>
         <div className="min-h-[200px] rounded-xl p-5 text-stone-600 shadow-md">
-          {expense
-            .slice()
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map((item) => (
-              <div
-                key={item.id}
-                className="m-2 rounded-xl bg-purple-900/10 px-4 py-1"
-              >
-                <div className="flex items-center">
-                  <p className="text-lg font-semibold"> {item.price}€</p>
-                  <p className="ml-2"> {item.title}</p>
+          {Object.entries(
+            expense
+              .slice(0, 5) //Map lastest 5 items
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .reduce((acc, item) => {
+                const date = new Date(item.createdAt).toLocaleDateString(
+                  'fr-FR',
+                );
+                if (!acc[date]) acc[date] = [];
+                acc[date].push(item);
+                return acc;
+              }, {}),
+          ).map(([date, items]) => (
+            <div key={date} className="mb-4">
+              <h3 className="text-sm font-bold text-purple-900">{date}</h3>
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="m-2 rounded-xl bg-purple-900/10 px-4 py-1"
+                >
+                  <div className="flex items-center">
+                    <p className="ml-2">{item.category.emoji}</p>
+                    {/* <p className="text-lg font-semibold">{item.price}€</p> */}
+                    <p className="text-lg font-semibold">
+                      {item.price} {item.originalCurrency}
+                      {item.originalCurrency !== 'EUR' && (
+                        <span className="ml-2 text-sm text-slate-500">
+                          (~{item.priceInEUR} EUR)
+                        </span>
+                      )}
+                    </p>
+                    <p className="ml-2">{item.title}</p>
+                    <p className="ml-2 text-purple-500">{item.countryCode}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          ))}
         </div>
         <section className="m-10 flex gap-5">
           <div className="flex flex-col items-center justify-center">

@@ -50,7 +50,7 @@ const initialState = {
       position: [10, 53],
       price: 3,
       category: { id: 1, name: 'Restauration', emoji: '🍕' },
-      createdAt: new Date('11-12-2024'),
+      createdAt: new Date('03-14-2024'),
     },
     {
       id: nanoid(),
@@ -66,7 +66,7 @@ const initialState = {
       position: [10, 53],
       price: 93,
       category: { id: 2, name: 'Shop', emoji: '🛍️' },
-      createdAt: new Date('11-12-2024'),
+      createdAt: new Date('08-02-2024'),
     },
     {
       id: nanoid(),
@@ -82,7 +82,7 @@ const initialState = {
       position: [10, 53],
       price: 93,
       category: { id: 1, name: 'Restauration', emoji: '🍕' },
-      createdAt: new Date('11-12-2024'),
+      createdAt: new Date('05-02-2024'),
     },
   ],
 };
