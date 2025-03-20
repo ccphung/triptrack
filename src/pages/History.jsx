@@ -42,6 +42,8 @@ function History() {
 
   const windownWidth = useScreenWidth();
 
+  const zoomMap = windownWidth < 960 ? '12' : '6';
+
   return (
     <>
       <div
@@ -112,6 +114,7 @@ function History() {
                       expenses={expensesByTravel}
                       setMapPositions={setMapPositions}
                       setPosition={setPosition}
+                      zoomMap={zoomMap}
                     />
                   </div>
 

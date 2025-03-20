@@ -7,11 +7,18 @@ import {
 } from 'react-leaflet';
 import styles from './MapView.module.css';
 
-function MapView({ setLat, setLng, position, mapPositions, expenses }) {
+function MapView({
+  setLat,
+  setLng,
+  position,
+  mapPositions,
+  expenses,
+  zoomMap,
+}) {
   return (
     <MapContainer
       center={position}
-      zoom={4}
+      zoom={zoomMap}
       scrollWheelZoom={true}
       className={styles.map}
     >
