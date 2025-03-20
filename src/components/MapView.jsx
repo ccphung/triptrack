@@ -1,29 +1,36 @@
 import {
   MapContainer,
   Marker,
-  Popup,
   TileLayer,
   useMap,
   useMapEvents,
 } from 'react-leaflet';
 import styles from './MapView.module.css';
 
-function MapView({ setLat, setLng, position, zoom }) {
+function MapView({ setLat, setLng, position, mapPositions, expenses }) {
   return (
     <MapContainer
       center={position}
-      zoom={zoom}
+      zoom={4}
       scrollWheelZoom={true}
       className={styles.map}
     >
-      <ChangeView center={position} zoom={zoom} />
+      <ChangeView center={position} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
       />
-      <Marker position={position}>
-        <Popup></Popup>
-      </Marker>{' '}
+
+      {mapPositions?.map((mapPosition, index) => (
+        <Marker key={index} position={mapPosition}>
+          {mapPosition &&
+          position &&
+          mapPosition.toString() === position.toString()
+            ? console.log(mapPosition)
+            : console.log(expenses)}
+        </Marker>
+      ))}
+
       <DetectClick setLat={setLat} setLng={setLng} />
     </MapContainer>
   );
@@ -32,15 +39,18 @@ function MapView({ setLat, setLng, position, zoom }) {
 function DetectClick({ setLat, setLng }) {
   useMapEvents({
     click: (e) => {
-      setLat(e.latlng.lat);
-      setLng(e.latlng.lng);
+      if (setLat) {
+        setLat(e.latlng.lat);
+      }
+      if (setLng) {
+        setLng(e.latlng.lng);
+      }
     },
   });
 }
-
-function ChangeView({ center, zoom }) {
+function ChangeView({ center }) {
   const map = useMap();
-  map.setView(center, zoom);
+  map.setView(center);
 
   return null;
 }

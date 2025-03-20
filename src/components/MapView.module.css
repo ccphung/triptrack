@@ -1,10 +1,11 @@
 .mapContainer {
   background-color: var(--color-dark--2);
+  max-width: 90%;
 }
 
 .map {
-  height: 400px;
-  width: 400px;
+  height: 500px;
+  width: 500px;
 }
 
 :global(.leaflet-popup .leaflet-popup-content-wrapper) {
@@ -32,4 +33,11 @@
 
 :global(.leaflet-popup-content-wrapper) {
   border-left: 5px solid rgb(132, 40, 132);
+}
+
+@media (width < 960px) {
+  .map {
+    height: 300px;
+    width: 300px;
+  }
 }

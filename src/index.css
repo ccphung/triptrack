@@ -4,3 +4,35 @@
 
 @import 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 @import 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap';
+
+@layer components {
+  .label {
+    @apply w-[7rem] rounded-full border border-stone-200 bg-slate-600 px-4 py-2 text-center text-sm text-stone-50 transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-violet-400 md:px-6 md:py-3;
+  }
+  .input {
+    @apply w-[11rem] rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-violet-400 md:mx-2 md:px-6 md:py-3;
+  }
+
+  .button {
+    @apply mt-5 w-[9rem] rounded-full border border-stone-200 bg-violet-400 px-4 py-2 text-center text-sm text-stone-50 transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-violet-400 md:px-6 md:py-3;
+  }
+}
+
+.custom-calendar .react-datepicker__month {
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.custom-calendar .react-datepicker__header {
+  background-color: #b8aeff;
+  color: white;
+}
+
+.custom-calendar .react-datepicker__day--selected {
+  background-color: #6c5ce7;
+  color: white;
+}
+
+.custom-calendar .react-datepicker__day:hover {
+  background-color: #e5e7eb;
+}
