@@ -13,7 +13,7 @@ function MapView({
   position,
   mapPositions,
   expenses,
-  zoomMap,
+  zoomMap = '6',
 }) {
   return (
     <MapContainer

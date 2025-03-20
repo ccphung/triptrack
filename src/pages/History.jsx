@@ -42,7 +42,7 @@ function History() {
 
   const windownWidth = useScreenWidth();
 
-  const zoomMap = windownWidth < 960 ? '12' : '6';
+  const zoomMap = windownWidth < 960 ? 12 : 6;
 
   return (
     <>
