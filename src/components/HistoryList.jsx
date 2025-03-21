@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { formatCurrency, formatDate, formatDateHuman } from '../utils/helpers';
 import { useSelector } from 'react-redux';
-import { getDates, getExpenses } from '../store';
-import ExpenseItem from './ExpenseItem';
 import { useParams } from 'react-router-dom';
+
+import { getDates, getExpenses } from '../store';
+
+import { formatCurrency, formatDate, formatDateHuman } from '../utils/helpers';
+import ExpenseItem from './ExpenseItem';
 
 function HistoryList({
   setIsMapOpen,

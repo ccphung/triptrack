@@ -1,3 +1,8 @@
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getExpenses } from '../store';
+import { formatCurrency } from '../utils/helpers';
+import { useScreenWidth } from '../hooks/useScreenWidth';
 import {
   CarTaxiFront,
   FileQuestion,
@@ -6,11 +11,6 @@ import {
   ShoppingBagIcon,
   X,
 } from 'lucide-react';
-import { formatCurrency } from '../utils/helpers';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getExpenses } from '../store';
-import { useScreenWidth } from '../hooks/useScreenWidth';
 
 function ExpenseItem({
   item,

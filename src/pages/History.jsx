@@ -1,20 +1,20 @@
 import { useSelector } from 'react-redux';
-import { getExpenses, getTravels } from '../store';
 import { useState } from 'react';
-import MapView from '../components/MapView';
+
+import { Plus, Trash, X } from 'lucide-react';
 import { formatCurrency } from '../utils/helpers';
+import { useScreenWidth } from '../hooks/useScreenWidth';
+import { useNavigate, useParams } from 'react-router-dom';
+import Modal from '../components/Modal';
+import MapView from '../components/MapView';
+import HistoryList from '../components/HistoryList';
+import Chart from '../components/Chart';
 import {
   deleteExpense,
   deleteExpensesByTravelId,
 } from '../slices/expenseSlice';
-import { Plus, Trash, X } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { deleteTravel } from '../slices/travelSlice';
-import Modal from '../components/Modal';
-
-import HistoryList from '../components/HistoryList';
-import Chart from '../components/Chart';
-import { useScreenWidth } from '../hooks/useScreenWidth';
+import { getExpenses, getTravels } from '../store';
 
 function History() {
   const [showConfirmTravelDelete, setShowConfirmTravelDelete] = useState(false);
@@ -25,6 +25,7 @@ function History() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [position, setPosition] = useState([]);
   const [showHistory, setShowHistory] = useState(true);
+
   const { travelId } = useParams();
   const navigate = useNavigate();
 
@@ -92,7 +93,7 @@ function History() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center">
+          <div className="flex justify-center">
             {showHistory && (
               <HistoryList
                 setIsMapOpen={setIsMapOpen}
