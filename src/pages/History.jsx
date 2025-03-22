@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Plus, Trash, X } from 'lucide-react';
 import { formatCurrency } from '../utils/helpers';
