@@ -33,8 +33,9 @@ function History() {
   const travels = useSelector(getTravels);
 
   const currentTravel = travels.filter((travel) => travel.id === travelId);
-  const expensesByTravel = expenses.filter(
-    (expense) => expense.travelId === travelId,
+  const expensesByTravel = useMemo(
+    () => expenses.filter((expense) => expense.travelId === travelId),
+    [expenses, travelId],
   );
 
   function handleDelete() {
@@ -55,7 +56,7 @@ function History() {
         <div className="w-[100%] max-w-[1048px] xl:w-[80%]">
           <div className="rounded-lg bg-violet-400 p-1 text-center">
             <h1 className="bordertext-center mb-2 mt-5 rounded-lg text-[1.5em] text-stone-100">
-              {currentTravel[0].title}
+              {currentTravel[0]?.title || 'Voyage introuvable'}
             </h1>
             <Chart />
             {expensesByTravel.length === 0 && (

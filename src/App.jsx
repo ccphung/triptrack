@@ -1,11 +1,14 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import './index.css';
 import CreateExpense from './pages/CreateExpense';
 import Homepage from './pages/Homepage';
-import './index.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import CreateTravel from './pages/CreateTravel';
+import Error from './pages/Error';
+
 import History from './pages/History';
 import MapView from './components/MapView';
 import Navbar from './components/Navbar';
-import CreateTravel from './pages/CreateTravel';
 
 function App() {
   return (
@@ -20,6 +23,7 @@ function App() {
           element={<CreateExpense />}
         />
         <Route path="map" element={<MapView />} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
   );
