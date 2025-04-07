@@ -1,6 +1,6 @@
-# 🌍 TripTriack
+# 🌍 TripTrick
 
-**TripTriack** est une application web qui permet de **suivre et enregistrer ses dépenses de voyage** de manière simple et efficace. Que tu sois en road trip, en city break ou en tour du monde, TripTriack t'aide à garder une trace claire de ton budget !
+**TripTrick** est une application web qui permet de **suivre et enregistrer ses dépenses de voyage** de manière simple et efficace. Que tu sois en road trip, en city break ou en tour du monde, TripTrick t'aide à garder une trace claire de ton budget !
 
 🧭 **Essaye-la ici** 👉 [https://triptrack-teal.vercel.app/](https://triptrack-teal.vercel.app/)
 
@@ -37,11 +37,8 @@
 # Cloner le repo
 git clone https://github.com/ton-utilisateur/triptriack.git
 
-# Accéder au dossier
-cd triptriack
-
 # Installer les dépendances
 npm install
 
 # Lancer le serveur de développement
-npm start
+npm run dev
