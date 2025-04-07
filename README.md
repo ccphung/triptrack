@@ -1,12 +1,40 @@
-# React + Vite
+# 🌍 TripTriack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**TripTriack** est une application web qui permet de **suivre et enregistrer ses dépenses de voyage** de manière simple et efficace. Que tu sois en road trip, en city break ou en tour du monde, TripTriack t'aide à garder une trace claire de ton budget !
 
-Currently, two official plugins are available:
+🧭 **Essaye-la ici** 👉 [https://triptrack-teal.vercel.app/](https://triptrack-teal.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Fonctionnalités
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🧳 Création de voyages personnalisés
+- 📌 Enregistrement des dépenses par catégorie (transport, hébergement, nourriture, etc.)
+- 🗺️ Ajout de l’emplacement géographique de chaque dépense
+- 💱 Conversion automatique dans la devise locale du pays visité
+- 💰 Visualisation du total des dépenses par voyage
+- 🧾 Détail complet de chaque dépense (montant, date, description)
+- 🔄 Synchronisation en temps réel grâce à **Redux**
+- 📱 Interface responsive et moderne avec **Tailwind CSS**
+
+---
+
+## ⚙️ Tech Stack
+
+- **React** – Interface utilisateur dynamique et réactive  
+- **Redux** – Gestion centralisée de l'état de l'application  
+- **Tailwind CSS** – Design minimaliste et responsive  
+
+---
+
+## 🚀 Lancer le projet en local
+
+```bash
+# Cloner le repo
+git clone https://github.com/ccphung/triptrack.git
+
+# Installer les dépendances
+npm install
+
+# Lancer le serveur de développement
+npm run dev
