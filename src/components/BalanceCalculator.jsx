@@ -4,16 +4,22 @@ export default function BalanceCalculator({ expenses, travel }) {
   const { travelers } = travel[0];
   console.log(travelers);
 
-  const totalByPerson = travelers.reduce((acc, traveler) => {
+  const totalPerPerson = travelers.reduce((acc, traveler) => {
     const total = expenses
       .filter((expense) => expense.payer === traveler)
-      .reduce((sum, expense) => sum + Number(expense.price), 0);
+      .reduce((sum, expense) => {
+        const expenseInEur =
+          expense.selectedCurrency !== 'EUR'
+            ? expense.price / expense.exchangeRate
+            : expense.price;
+        return sum + Number(expenseInEur);
+      }, 0);
 
     acc[traveler] = total;
     return acc;
   }, {});
 
-  const totalArray = Object.entries(totalByPerson).map(([name, total]) => ({
+  const totalArray = Object.entries(totalPerPerson).map(([name, total]) => ({
     name,
     total,
   }));
