@@ -27,7 +27,9 @@ export default function BalanceCalculator({ expenses, travel }) {
     (t) => t.total === averagePerPerson,
   );
 
-  if (allPaidSameAmount) {
+  console.log(expenses.length);
+
+  if (allPaidSameAmount && expenses.length > 0) {
     return (
       <div className="flex justify-center text-green-800">
         <CheckCheckIcon />
