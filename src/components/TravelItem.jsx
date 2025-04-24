@@ -19,12 +19,12 @@ function TravelItem({ item, expenses }) {
       >
         <div className="items-star ml-5 flex flex-col justify-start">
           <p className="text-center text-lg text-slate-800">{item.title}</p>
-          <p className="text-md flex text-center text-slate-500">
+          <div className="text-md flex text-center text-slate-500">
             <Calendar className="mr-2 w-4" />
             {formatDateHuman(item.date)}
-          </p>
+          </div>
 
-          <p className="text-md flex justify-stretch text-center text-slate-500">
+          <div className="text-md flex justify-stretch text-center text-slate-500">
             <LucideBanknote className="mr-2 w-4" />
             {formatCurrency(
               expenses.reduce((total, expense) => {
@@ -36,12 +36,12 @@ function TravelItem({ item, expenses }) {
               }, 0),
               'EUR',
             )}
-          </p>
+          </div>
 
-          <p className="text-md flex text-center text-slate-500">
+          <div className="text-md flex text-center text-slate-500">
             <Paperclip className="mr-2 w-4" />
             {expenses.length} dépenses
-          </p>
+          </div>
         </div>
       </div>
     </button>

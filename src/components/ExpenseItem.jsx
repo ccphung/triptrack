@@ -124,8 +124,15 @@ function ExpenseItem({
                 </div>
               )}
             </div>
+
+            {item.payer && (
+              <p className="ml-2 text-start text-sm text-stone-800">
+                Payé par : {item.payer}
+              </p>
+            )}
+
             {item.note && (
-              <p className="mb-5 ml-2 text-start text-sm text-stone-800">
+              <p className="ml-2 text-start text-sm text-stone-800">
                 Note: <span className="p-2 italic">{item.note}</span>
               </p>
             )}

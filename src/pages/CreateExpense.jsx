@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { CiGps } from 'react-icons/ci';
@@ -44,6 +44,9 @@ function CreateExpense() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { travelId } = useParams();
+  const travels = useSelector((state) => state.travel.travel);
+  const travel = travels.find((t) => t.id === travelId);
+
 
   const { position, getPosition } = useFetchPosition(lat, lng, setLng, setLat);
 
@@ -81,6 +84,7 @@ function CreateExpense() {
       createdAt: new Date().toISOString(),
       currency,
       travelId,
+      payer: data.payer,
     };
 
     dispatch(createExpense(newExpense));
@@ -160,7 +164,8 @@ function CreateExpense() {
               exchangeRate &&
               price && (
                 <p className="text-end italic text-slate-500">
-                  ({formatCurrency(price * exchangeRate, currency)})
+                  ({formatCurrency((price * exchangeRate).toFixed(2), currency)}
+                  )
                 </p>
               )}
 
@@ -219,7 +224,11 @@ function CreateExpense() {
                     {...field}
                     type="text"
                     placeholder={
-                      isLoadingGeocoding ? 'Chargement....' : cityName
+                      isLoadingGeocoding
+                        ? 'Chargement....'
+                        : cityName
+                          ? cityName
+                          : 'Cliquez sur la carte'
                     }
                     disabled
                     required
@@ -242,6 +251,30 @@ function CreateExpense() {
               <p className="text-sm italic text-red-500">
                 {errors.city.message}
               </p>
+            )}
+
+            {travel.travelers.length > 1 && (
+              <div className="my-4 flex flex-row items-center">
+                <label htmlFor="payer" className="label">
+                  Qui a payé ?
+                </label>
+                {travel.travelers.length > 1 && (
+                  <Controller
+                    name="payer"
+                    control={control}
+                    defaultValue={travel.travelers[0]}
+                    render={({ field }) => (
+                      <select {...field} className="input">
+                        {travel.travelers.map((traveler, index) => (
+                          <option key={index} value={traveler}>
+                            {traveler}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  />
+                )}
+              </div>
             )}
 
             <div className="mt-5 flex flex-row items-center text-stone-700">

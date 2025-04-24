@@ -1,10 +1,18 @@
+import {
+  Calendar as CalendarIcon,
+  PaletteIcon,
+  Plane,
+  PlusCircle,
+  X,
+} from 'lucide-react';
+import { nanoid } from 'nanoid';
+import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { createTravel } from '../slices/travelSlice';
-import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
-import { Calendar as CalendarIcon, PaletteIcon, Plane, X } from 'lucide-react';
 import Calendar from '../components/Calender';
+import InputTravelers from '../components/InputTravelers';
+import { createTravel } from '../slices/travelSlice';
 
 const colors = [
   { id: 1, color: 'violet-500' },
@@ -28,6 +36,8 @@ function CreateTravel() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [travelers, setTravelers] = useState([{ id: 0, name: '' }]);
+
   const {
     register,
     control,
@@ -37,16 +47,34 @@ function CreateTravel() {
 
   const selectedColor = useWatch({ control, name: 'color' });
 
-  function onSubmit(data) {
-    console.log(data);
+  function handleTravelerChange(updatedTraveler) {
+    setTravelers((prev) =>
+      prev.map((t, i) =>
+        i === updatedTraveler.id ? { ...t, name: updatedTraveler.name } : t,
+      ),
+    );
+  }
 
+  function handleRemoveTraveler(indexToRemove) {
+    setTravelers((prev) => prev.filter((_, i) => i !== indexToRemove));
+  }
+
+  function handleAddTraveler() {
+    setTravelers((prev) => [...prev, { id: prev.length, name: '' }]);
+  }
+
+  function onSubmit(data) {
     const newTravel = {
       id: nanoid(),
       title: data.title,
       date: data.date,
       color: data.color,
+      travelers: travelers
+        .map((t) => t.name.trim())
+        .filter((name) => name !== ''),
       createdAt: new Date().toISOString(),
     };
+
     dispatch(createTravel(newTravel));
     navigate('/');
   }
@@ -55,89 +83,94 @@ function CreateTravel() {
     <div className="flex flex-wrap items-center justify-center gap-10 overflow-x-hidden">
       <div className="max-w-[1048px] rounded-xl p-5 shadow-md">
         <div className="mb-5 rounded-lg bg-violet-400 px-3 py-5 text-center">
-          <h1 className="bordertext-center mb-2 mt-2 rounded-lg text-[1.2em] text-stone-100">
-            Créer un voyage
-          </h1>
+          <h1 className="text-[1.2em] text-stone-100">Créer un voyage</h1>
         </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="xl:mr-5">
-          <div className="flex flex-col items-stretch">
-            <div className="my-4 flex flex-row items-center">
-              <label
-                htmlFor="date"
-                className="label flex items-center justify-center"
-              >
-                <Plane />
-              </label>
-              <input
-                autoFocus
-                type="text"
-                placeholder="  Titre du voyage"
-                className="input w-[15rem] text-center"
-                id="title"
-                {...register('title', { required: 'Ce champ est obligatoire' })}
-              />
-              {errors?.title?.message && (
-                <p className="text-sm italic text-red-500">
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
+          {/* Title */}
+          <div className="my-4 flex flex-row items-center">
+            <label className="label flex items-center justify-center">
+              <Plane />
+            </label>
+            <input
+              type="text"
+              placeholder="Titre du voyage"
+              className="input w-[15rem] text-center"
+              {...register('title', { required: 'Ce champ est obligatoire' })}
+            />
+            {errors?.title?.message && (
+              <p className="ml-4 text-sm italic text-red-500">
+                {errors.title.message}
+              </p>
+            )}
+          </div>
 
-            <div className="my-4 flex flex-row items-center">
-              <label
-                htmlFor="date"
-                className="label flex items-center justify-center"
-              >
-                <CalendarIcon />
-              </label>
+          {/* Date */}
+          <div className="my-4 flex flex-row items-center">
+            <label className="label flex items-center justify-center">
+              <CalendarIcon />
+            </label>
+            <Controller
+              name="date"
+              control={control}
+              defaultValue={new Date().toISOString()}
+              render={({ field }) => <Calendar field={field} />}
+            />
+          </div>
 
+          {/* Travelers */}
+          {travelers.map((traveler, index) => (
+            <InputTravelers
+              key={traveler.id}
+              index={index}
+              value={traveler.name}
+              onChange={handleTravelerChange}
+              onRemove={handleRemoveTraveler}
+            />
+          ))}
+
+          <PlusCircle
+            className="mx-auto mt-4 cursor-pointer text-gray-500"
+            onClick={handleAddTraveler}
+          />
+
+          {/* Theme */}
+          <div className="mt-5 flex flex-row items-center text-stone-700">
+            <label className="label flex items-center justify-center">
+              <PaletteIcon />
+            </label>
+            <div className="my-4 ml-3 flex flex-row">
               <Controller
-                name="date"
+                name="color"
                 control={control}
-                defaultValue={new Date().toISOString()}
-                render={({ field }) => <Calendar field={field} />}
+                render={({ field }) => (
+                  <div className="flex-row flex-wrap items-start justify-start space-x-4 md:flex">
+                    {colors.map((color) => (
+                      <button
+                        key={color.id}
+                        onClick={(e) => {
+                          field.onChange(color.color);
+                          e.preventDefault();
+                        }}
+                        className={`relative h-10 w-10 rounded-lg border border-slate-400 ${
+                          colorClasses[color.color] || ''
+                        }`}
+                      >
+                        {selectedColor === color.color && (
+                          <span className="absolute right-1 top-1 rounded-full p-1 text-slate-800">
+                            <X />
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
               />
-            </div>
-
-            <div className="mt-5 flex flex-row items-center text-stone-700">
-              <label
-                htmlFor="colors"
-                className="label flex items-center justify-center"
-              >
-                <PaletteIcon />
-              </label>
-              <div className="my-4 ml-3 flex flex-row">
-                <Controller
-                  name="color"
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex-row flex-wrap items-start justify-start space-x-4 md:flex">
-                      {colors.map((color) => (
-                        <button
-                          key={color.id}
-                          onClick={(e) => {
-                            field.onChange(color.color);
-                            e.preventDefault();
-                          }}
-                          className={`relative h-10 w-10 rounded-lg border border-slate-400 ${
-                            colorClasses[color.color] || ''
-                          }`}
-                        >
-                          {selectedColor === color.color && (
-                            <span className="absolute right-1 top-1 rounded-full p-1 text-slate-800">
-                              <X />
-                            </span>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                />
-              </div>
             </div>
           </div>
+
           <div className="flex items-center justify-center">
-            <button className="md:py-3; mt-5 rounded-full border border-slate-200 bg-violet-400 px-4 py-2 text-lg text-white transition-all duration-300 placeholder:text-stone-400 hover:bg-violet-300 focus:outline-none focus:ring focus:ring-violet-400 md:px-6">
+            <button className="mt-5 rounded-full border border-slate-200 bg-violet-400 px-6 py-3 text-lg text-white transition-all duration-300 hover:bg-violet-300 focus:outline-none focus:ring focus:ring-violet-400">
               Enregistrer
             </button>
           </div>

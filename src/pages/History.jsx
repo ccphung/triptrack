@@ -15,6 +15,7 @@ import {
 } from '../slices/expenseSlice';
 import { deleteTravel } from '../slices/travelSlice';
 import { getExpenses, getTravels } from '../store';
+import BalanceCalculator from '../components/BalanceCalculator';
 
 function History() {
   const [showConfirmTravelDelete, setShowConfirmTravelDelete] = useState(false);
@@ -59,6 +60,7 @@ function History() {
               {currentTravel[0]?.title || 'Voyage introuvable'}
             </h1>
             <Chart />
+
             {expensesByTravel.length === 0 && (
               <p className="text-center text-lg text-stone-100">
                 Commencez par ajouter une nouvelle dépense
@@ -76,6 +78,11 @@ function History() {
                 'EUR',
               )}
             </h2>
+
+            <BalanceCalculator
+              expenses={expensesByTravel}
+              travel={currentTravel}
+            />
 
             <div className="flex items-center justify-between">
               <button
