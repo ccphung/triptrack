@@ -1,21 +1,24 @@
 import { useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
-
-import { Plus, Trash, X } from 'lucide-react';
-import { formatCurrency } from '../utils/helpers';
-import { useScreenWidth } from '../hooks/useScreenWidth';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { useScreenWidth } from '../hooks/useScreenWidth';
+
+import { deleteTravel } from '../slices/travelSlice';
+import { getExpenses, getTravels } from '../store';
+
+import { formatCurrency } from '../utils/helpers';
 import Modal from '../components/Modal';
 import MapView from '../components/MapView';
 import HistoryList from '../components/HistoryList';
 import Chart from '../components/Chart';
+import BalanceCalculator from '../components/BalanceCalculator';
 import {
   deleteExpense,
   deleteExpensesByTravelId,
 } from '../slices/expenseSlice';
-import { deleteTravel } from '../slices/travelSlice';
-import { getExpenses, getTravels } from '../store';
-import BalanceCalculator from '../components/BalanceCalculator';
+
+import { Plus, Trash, X } from 'lucide-react';
 
 function History() {
   const [showConfirmTravelDelete, setShowConfirmTravelDelete] = useState(false);
@@ -33,7 +36,7 @@ function History() {
   const expenses = useSelector(getExpenses);
   const travels = useSelector(getTravels);
 
-  const currentTravel = travels.filter((travel) => travel.id === travelId);
+  const currentTravel = travels.find((t) => String(t.id) === String(travelId));
   const expensesByTravel = useMemo(
     () => expenses.filter((expense) => expense.travelId === travelId),
     [expenses, travelId],
@@ -47,6 +50,9 @@ function History() {
 
   const zoomMap = windownWidth < 960 ? 12 : 6;
 
+  console.log('expenses' + expenses);
+  console.log('travels' + travels);
+
   return (
     <>
       <div
@@ -57,8 +63,15 @@ function History() {
         <div className="w-[100%] max-w-[1048px] xl:w-[80%]">
           <div className="rounded-lg bg-violet-400 p-1 text-center">
             <h1 className="bordertext-center mb-2 mt-5 rounded-lg text-[1.5em] text-stone-100">
-              {currentTravel[0]?.title || 'Voyage introuvable'}
+              {currentTravel?.title || 'Voyage introuvable'}
             </h1>
+
+            {currentTravel?.travelers && currentTravel.travelers.length > 0 && (
+              <p className="mb-5 text-center text-stone-100">
+                Voyageurs : {currentTravel.travelers.join(', ')}
+              </p>
+            )}
+
             <Chart />
 
             {expensesByTravel.length === 0 && (
@@ -66,6 +79,7 @@ function History() {
                 Commencez par ajouter une nouvelle dépense
               </p>
             )}
+
             <h2 className="my-2 text-center text-[2em]">
               {formatCurrency(
                 expensesByTravel.reduce((total, expense) => {

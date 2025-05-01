@@ -45,8 +45,7 @@ function CreateExpense() {
   const navigate = useNavigate();
   const { travelId } = useParams();
   const travels = useSelector((state) => state.travel.travel);
-  const travel = travels.find((t) => t.id === travelId);
-
+  const travel = travels.find((t) => String(t.id) === String(travelId));
 
   const { position, getPosition } = useFetchPosition(lat, lng, setLng, setLat);
 
@@ -253,7 +252,7 @@ function CreateExpense() {
               </p>
             )}
 
-            {travel.travelers.length > 1 && (
+            {travel?.travelers.length > 0 && (
               <div className="my-4 flex flex-row items-center">
                 <label htmlFor="payer" className="label">
                   Qui a payé ?

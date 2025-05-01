@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency, formatDateHuman } from '../utils/helpers';
-import { Calendar, LucideBanknote, Paperclip } from 'lucide-react';
+import {
+  Calendar,
+  LucideBanknote,
+  Paperclip,
+  PersonStanding,
+} from 'lucide-react';
 
 function TravelItem({ item, expenses }) {
   const navigate = useNavigate();
@@ -19,6 +24,12 @@ function TravelItem({ item, expenses }) {
       >
         <div className="items-star ml-5 flex flex-col justify-start">
           <p className="text-center text-lg text-slate-800">{item.title}</p>
+
+          <div className="text-md flex text-center text-slate-500">
+            <PersonStanding className="mr-2 w-4" />
+            {item.travelers.join(', ')}
+          </div>
+
           <div className="text-md flex text-center text-slate-500">
             <Calendar className="mr-2 w-4" />
             {formatDateHuman(item.date)}
