@@ -1,8 +1,7 @@
 import { CheckCheckIcon } from 'lucide-react';
 
 export default function BalanceCalculator({ expenses, travel }) {
-  const { travelers } = travel[0];
-  console.log(travelers);
+  const { travelers } = travel;
 
   const totalPerPerson = travelers.reduce((acc, traveler) => {
     const total = expenses
@@ -24,16 +23,16 @@ export default function BalanceCalculator({ expenses, travel }) {
     total,
   }));
 
-  const averagePerPerson =
-    totalArray.reduce((acc, t) => acc + t.total, 0) / totalArray.length;
+  const totalPaid = totalArray.reduce((acc, t) => acc + t.total, 0);
+  const averagePerPerson = totalPaid / totalArray.length;
 
   const maxExpensePerson = totalArray.filter((t) => t.total > averagePerPerson);
+
+  const minExpensePerson = totalArray.filter((t) => t.total < averagePerPerson);
 
   const allPaidSameAmount = totalArray.every(
     (t) => t.total === averagePerPerson,
   );
-
-  console.log(expenses.length);
 
   if (allPaidSameAmount && expenses.length > 0) {
     return (
@@ -46,32 +45,29 @@ export default function BalanceCalculator({ expenses, travel }) {
 
   return (
     <div>
-      {totalArray.map((t) => {
-        if (t.total < averagePerPerson) {
-          const totalDebt = averagePerPerson - t.total;
+      {minExpensePerson.map((t) => {
+        const totalDebt = averagePerPerson - t.total;
+        const totalMaxPaying = maxExpensePerson.reduce(
+          (acc, p) => acc + (p.total - averagePerPerson),
+          0,
+        );
 
-          const totalMaxPaying = maxExpensePerson.reduce(
-            (acc, p) => acc + p.total,
-            0,
-          );
-
-          return (
-            <div key={t.name}>
-              <p>
-                {maxExpensePerson.map((p) => {
-                  const amount = (totalDebt * p.total) / totalMaxPaying;
-                  return (
-                    <span key={p.name}>
-                      {t.name} doit à {p.name}: {amount.toFixed(2)} €
-                      <br />
-                    </span>
-                  );
-                })}
-              </p>
-            </div>
-          );
-        }
-        return null;
+        return (
+          <div key={t.name}>
+            <p>
+              {maxExpensePerson.map((p) => {
+                const amount =
+                  (totalDebt * (p.total - averagePerPerson)) / totalMaxPaying;
+                return (
+                  <span key={p.name}>
+                    {t.name} doit à {p.name}: {amount.toFixed(2)} €
+                    <br />
+                  </span>
+                );
+              })}
+            </p>
+          </div>
+        );
       })}
     </div>
   );
